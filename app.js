@@ -23,6 +23,9 @@ app.use(express.json())
 app.use(flash())
 
 app.use(function(req, res, next){
+    //make flash msgs available from everywhere
+    res.locals.errors = req.flash('errors')
+    res.locals.success = req.flash('success')
     //send visitor id to views
     if(req.session.user){
         req.visitorId = req.session.user._id
