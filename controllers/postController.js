@@ -5,10 +5,31 @@ exports.viewCreateScreen = function(req, res) {
 }
 
 exports.create = function(req, res){
-    let post = new Post(req.body, req.session._id)
+    
+    let post = new Post(req.body, req.session.user._id)
     post.create().then(function(){
 
     }).catch(function(){
 
     })
+}
+
+exports.viewSingle = async function(req, res){
+    try{
+        let post = await Post.findSingleById(req.params.id, req.visitorId)
+        res.render("single-post-screen", {post: post})
+    }catch{
+        res.render("404")
+    }
+    
+}
+
+exports.viewEditSingle = async function(req, res){
+    try{
+        let post = await Post.findSingleById(req.params.id, req.visitorId)
+        res.render("edit-post", {post: post})
+    }catch{
+        res.render("404")
+    }
+    
 }

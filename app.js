@@ -23,6 +23,13 @@ app.use(express.json())
 app.use(flash())
 
 app.use(function(req, res, next){
+    //send visitor id to views
+    if(req.session.user){
+        req.visitorId = req.session.user._id
+    }else{
+        req.visitorId = 0
+    }
+    //make session data available in the views
     res.locals.user = req.session.user
     next()
 })
