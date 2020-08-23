@@ -2,6 +2,8 @@ const express = require("express")
 const session = require("express-session")
 const flash = require("connect-flash")
 const MongoStore = require("connect-mongo")(session)
+const markdown = require("marked")
+const sanitize = require("sanitize-html")
 
 const app = express()
 
@@ -23,6 +25,10 @@ app.use(express.json())
 app.use(flash())
 
 app.use(function(req, res, next){
+    //markdown
+    res.locals.filterUserHtml = function(content){
+        return sanitize(markdown(content), {allowedTags: ['p','li','ul','ol','strong','i', 'em','br','h1', 'h2','h3','h4','h5','h6'], allowedAttributes: []})
+    }
     //make flash msgs available from everywhere
     res.locals.errors = req.flash('errors')
     res.locals.success = req.flash('success')
