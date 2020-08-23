@@ -17,7 +17,7 @@ router.get("/profile/:username", userController.userExists, userController.profi
 router.get("/create-post", userController.checkLogin, postController.viewCreateScreen)
 router.post("/create-post", userController.checkLogin, postController.create)
 router.get("/post/:id", postController.viewSingle)
-router.get("/post/:id/edit", postController.viewEditSingle)
-router.post("/post/:id/edit", postController.edit)
+router.get("/post/:id/edit", userController.checkLogin, postController.viewEditSingle)
+router.post("/post/:id/edit", userController.checkLogin, postController.edit)
 
 module.exports = router

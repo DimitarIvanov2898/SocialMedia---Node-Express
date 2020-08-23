@@ -39,8 +39,8 @@ Post.prototype.create = function() {
         this.validate()
 
         if(!this.errors.length){
-            postsCollection.insertOne(this.data).then(() => {
-                resolve()
+            postsCollection.insertOne(this.data).then((info) => {
+                resolve(info.ops[0]._id)
             }).catch(() => {
                 this.errors.push("Db error, try again")
                 reject(this.errors)
