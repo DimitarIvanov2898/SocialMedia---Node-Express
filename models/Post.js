@@ -100,7 +100,7 @@ Post.postQuery = function(operations, visitorId) {
         //clean up posts
         posts = posts.map(function(post){
             post.isVisitorOwner = post.authorId.equals(visitorId)
-
+            post.authorId = "undefined"
             post.author = {
                 username: post.author.username,
                 avatar: new User(post.author, true).avatar
@@ -152,6 +152,20 @@ Post.delete = function(id, visitorId){
                 reject()
             }
         }catch{
+            reject()
+        }
+    })
+}
+
+Post.search = function(searchTerm) {
+    return new Promise(async (resolve, reject) => {
+        if(typeof(searchTerm) == 'string'){
+            let posts = await Post.postQuery([
+                {$match: {$text: {$search: searchTerm}}},
+                {$sort: {score: {$meta: "textScore"}}}
+            ])
+            resolve(posts)
+        }else{
             reject()
         }
     })
