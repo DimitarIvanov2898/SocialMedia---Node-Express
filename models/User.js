@@ -107,6 +107,7 @@ User.findByUsername = function(username) {
 
         usersCollection.findOne({username: username}).then(function(userDoc){
             if(userDoc){
+                
                 userDoc = new User(userDoc, true)
                 
                 userDoc = {
