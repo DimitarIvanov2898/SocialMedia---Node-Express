@@ -82,6 +82,7 @@ exports.profilePostScreen = function(req, res){
     .then(function(posts){    
         res.render("profile",{
             username: req.profileUser.username,
+            title: `Profile for ${req.profileUser.username}`,
             currentPage: "posts",
             avatar: req.profileUser.avatar,
             posts: posts,
