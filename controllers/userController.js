@@ -162,3 +162,16 @@ exports.sharedProfileData = async function(req, res, next) {
 
     next()
 }
+
+exports.doesUsernameExists = function(req, res) {
+    User.findByUsername(req.body.username).then(() => {
+        res.json(true)
+    }).catch(() =>{
+        res.json(false)
+    })
+}
+
+exports.doesEmailExists =  async function(req, res) {
+    let emailBool = await User.doesEmailExists(req.body.email)
+    res.json(emailBool)
+}
