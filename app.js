@@ -5,8 +5,13 @@ const MongoStore = require("connect-mongo")(session)
 const markdown = require("marked")
 const csrf = require("csurf")
 const sanitize = require("sanitize-html")
-
 const app = express()
+
+app.use(express.urlencoded({extended:false}))
+app.use(express.json())
+app.use("/api", require("./router-api"))
+
+
 
 let sessionOptions = session({
     secret: "raikokruvta",
@@ -22,8 +27,6 @@ const { urlencoded } = require("express")
 
 app.use(sessionOptions)
 app.use(express.static("public"))
-app.use(express.urlencoded({extended:false}))
-app.use(express.json())
 app.use(flash())
 
 app.use(function(req, res, next){
