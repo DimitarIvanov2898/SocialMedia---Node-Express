@@ -3,6 +3,7 @@ const session = require("express-session")
 const flash = require("connect-flash")
 const MongoStore = require("connect-mongo")(session)
 const markdown = require("marked")
+const csrf = require("csurf")
 const sanitize = require("sanitize-html")
 
 const app = express()
@@ -47,7 +48,26 @@ app.use(function(req, res, next){
 app.set("views", "views")
 app.set("view engine", "ejs")
 
+app.use(csrf())
+app.use(function(req, res, next) {
+    res.locals.csrfToken = req.csrfToken()
+    next()
+})
+
 app.use("/", router)
+app.use(function(err, req, res, next){
+    if(err){
+        if(err.code == "EBADCSRFTOKEN"){
+            req.flash("errors", "Cross site request forgery detected")
+            req.session.save(()=>{
+                res.redirect("/")
+            })
+        }else{
+            res.render("404")
+        }
+    }
+
+})
 
 //socket.io config
 const server = require("http").createServer(app)

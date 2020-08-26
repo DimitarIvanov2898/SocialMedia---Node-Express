@@ -2,6 +2,7 @@ import axios from 'axios'
 
 export default class RegistrationForm {
     constructor() {
+        this._csrf = document.querySelector('[name="_csrf"]').value
         this.form = document.querySelector("#registration-form")
         this.allFields = document.querySelectorAll("#registration-form .form-control")
         this.insertValidationElements()
@@ -98,7 +99,7 @@ export default class RegistrationForm {
         }
 
         if(!this.username.errors){
-            axios.post("/doesUsernameExists", {username: this.username.value}).then((response) => {
+            axios.post("/doesUsernameExists", {username: this.username.value, _csrf: this._csrf}).then((response) => {
                 if(response.data){
                     this.showValidationError(this.username, "Username already exists!")
                     this.username.isUnique = false
@@ -118,7 +119,7 @@ export default class RegistrationForm {
         }
 
         if(!this.email.errors){
-            axios.post("/doesEmailExists", {email: this.email.value}).then((response) => {
+            axios.post("/doesEmailExists", {email: this.email.value, _csrf: this._csrf}).then((response) => {
                 if(response.data){
                     this.showValidationError(this.email, "Email already exists!")
                     this.email.isUnique = false
