@@ -7,7 +7,7 @@ const cors = require("cors")
 apiRouter.use(cors())
 
 apiRouter.post("/login", userController.apiLogin)
-apiRouter.post("/create-post", userController.apiCheckLogin, userController.apiCreate)
+apiRouter.post("/create-post", userController.apiCheckLogin, postController.apiCreate)
 apiRouter.delete("/post/:id", userController.apiCheckLogin, postController.apiDelete)
 apiRouter.get("/postByAuthor/:username", userController.apiGetPostsByUsername)
 
